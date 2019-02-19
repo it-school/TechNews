@@ -1,28 +1,25 @@
 package itschool.technews;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.net.URL;
 
 public class HTMLgetter extends AsyncTask<Void, Void, Void> {
     String url;
     Document page;
 
-    private String readAll(Reader rd) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        int cp;
-        while ((cp = rd.read()) != -1) {
-            sb.append((char) cp);
-        }
-        return sb.toString();
+    public HTMLgetter() {
+        this.url = "https://news.sky.com/technology";
+        this.page = null;
+    }
+
+    public HTMLgetter(String url) {
+        this.url = url;
+        this.page = null;
     }
 
     @Override
@@ -32,31 +29,35 @@ public class HTMLgetter extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        page = null;
-        url = "https://news.sky.com/technology";
         try {
-            page = Jsoup.parse(new URL(url), 10000);
+            page = Jsoup.parse(new URL(url), 5000);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+/*
+// Альтернативный вариант получения содержимого страницы
         try {
             page = Jsoup.connect(url).get();// Connect to the web site
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.d("", page.title());
-
+*/
         return null;
     }
 
     @Override
     protected void onPostExecute(Void result) {
-        Elements news = page.select("span[class=sdc-site-tile__headline-text]");
+/*
+        if (this.page != null) {
+            Elements newses = page.select("span[class=sdc-site-tile__headline-text]");
 
-        for (Element neww : news) {
-            Log.d("news: ", neww.text());
+            for (Element news : newses)
+                Log.d("TechNews: ", news.text());
         }
+        else
+            Log.d("TechNews: ", "No news loaded!");
+*/
+        MainActivity.showNews();
     }
 }
 
