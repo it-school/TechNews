@@ -1,6 +1,7 @@
 package itschool.technews;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,44 +32,30 @@ public class HTMLgetter extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        String jsonIn = "";
-        Document page = null;
+        page = null;
         url = "https://news.sky.com/technology";
         try {
             page = Jsoup.parse(new URL(url), 10000);
-            jsonIn = "| " + page.text() + " |";
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        //textView.setText(textView.getText()+"In2\n");
         try {
             page = Jsoup.connect(url).get();// Connect to the web site
-            jsonIn = page.text();           // Get the html document title
-
-            //textView.setText(text);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d("", page.title());
+
         return null;
     }
 
     @Override
     protected void onPostExecute(Void result) {
-        Element tableWth = page.select("table").first();
-        Elements dates = tableWth.select("th[colspan=4]"); // даты дней недели для прогноза (их 3)
-        Elements rows = tableWth.select("tr");
+        Elements news = page.select("span[class=sdc-site-tile__headline-text]");
 
-        // извлекаем даты
-        String date = "";
-        for (Element d : dates)
-            date += "\t\t\t" + d.text();
-
-        // извлекаем температуру и темп. по ощущениям
-        int i = 0;
-        int r = 2;
-        Elements temperatures = tableWth.select("span[class=value m_temp c]");
-        for (Element t : temperatures) {
+        for (Element neww : news) {
+            Log.d("news: ", neww.text());
         }
     }
 }
