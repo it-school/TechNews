@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TechNews</string>
+    <string name="loadButton">Завантажити</string>
+    <string name="header" >Новини техніки</string>
+</resources>
